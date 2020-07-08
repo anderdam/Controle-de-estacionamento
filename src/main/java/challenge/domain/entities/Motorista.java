@@ -1,5 +1,6 @@
-package challenge;
+package challenge.domain.entities;
 
+import java.util.Objects;
 
 public class Motorista {
 

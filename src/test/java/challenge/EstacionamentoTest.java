@@ -1,13 +1,17 @@
 package challenge;
 
-
-import org.junit.Before;
-import org.junit.Test;
-
 import static java.util.concurrent.ThreadLocalRandom.current;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import challenge.domain.entities.Carro;
+import challenge.domain.entities.Motorista;
+import challenge.domain.enums.Cor;
+import challenge.exceptions.EstacionamentoException;
 
 public class EstacionamentoTest {
 

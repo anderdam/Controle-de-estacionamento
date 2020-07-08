@@ -1,4 +1,8 @@
-package challenge;
+package challenge.domain.entities;
+
+import java.util.Objects;
+
+import challenge.domain.enums.Cor;
 
 public class Carro {
 
