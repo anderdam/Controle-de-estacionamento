@@ -22,6 +22,7 @@ public class EstacionamentoTest {
         estacionamento = new Estacionamento();
     }
 
+    //Teste ok
     @Test(expected = NullPointerException.class)
     public void deveRetornarErroQuandoMotoristaNaoTemHabilitacao() {
         Motorista.builder().withNome("Ada")
@@ -30,6 +31,7 @@ public class EstacionamentoTest {
                 .build();
     }
 
+    //Teste ok
     @Test(expected = NullPointerException.class)
     public void deveRetornarErroQuandoMotoristaNaoTemNome() {
         Motorista.builder()
@@ -39,36 +41,39 @@ public class EstacionamentoTest {
                 .build();
     }
 
+    //Teste ok
     @Test(expected = IllegalArgumentException.class)
     public void deveRetorarErroQuandoIdadeNegativa() {
         Motorista.builder()
                 .withIdade(-1);
     }
 
+    //Teste ok
     @Test(expected = IllegalArgumentException.class)
     public void deveRetorarErroQuandoPontosNegativos() {
         Motorista.builder()
                 .withPontos(-1);
     }
 
-
+    //Teste ok
     @Test(expected = NullPointerException.class)
     public void deveRetornarErroQuandoNaoTemPlaca() {
         Carro.builder().withCor(Cor.COLORIDO).build();
     }
-
+    //Teste ok
     @Test(expected = NullPointerException.class)
     public void deveRetornarErroQuandoNaoTemCor() {
         Carro.builder().withPlaca("234234").build();
     }
 
-
+    //Teste ok
     @Test(expected = EstacionamentoException.class)
     public void naoDeveTerCarroAutonomo() {
         Carro carro = Carro.builder().withCor(Cor.COLORIDO).withPlaca("123").build();
         estacionamento.estacionar(carro);
     }
 
+    //Teste ok
     @Test(expected = EstacionamentoException.class)
     public void naoDeveTerMotoristaDeMenor() {
         Motorista motorista = Motorista.builder().withNome("Ada")
@@ -80,6 +85,7 @@ public class EstacionamentoTest {
         estacionamento.estacionar(carro);
     }
 
+    //Teste ok
     @Test(expected = EstacionamentoException.class)
     public void naoDeveEstacionarMotoristaSemPontos() {
         Motorista motorista = Motorista.builder().withNome("Ada")
@@ -91,6 +97,7 @@ public class EstacionamentoTest {
         estacionamento.estacionar(carro);
     }
 
+    //Teste ok
     @Test
     public void deveEstacionar() {
         Motorista motorista = Motorista.builder().withNome("Ada").withIdade(20)
@@ -107,6 +114,7 @@ public class EstacionamentoTest {
         assertEquals(1, estacionamento.carrosEstacionados());
 
     }
+
 
     @Test
     public void naoDeveUltrapassarEstacionamento() {

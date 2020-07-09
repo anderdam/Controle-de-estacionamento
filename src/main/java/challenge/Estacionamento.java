@@ -1,6 +1,4 @@
 /*
-*
-*• Para cada carro que entra no sistema é necessário informar a sua placa, cor além das informações do motorista.
 *• O estacionamento não deverá comportar o número superior de vagas.
 *• Caso o estacionamento esteja lotado:
 *  * Chegue mais um novo carro, o primeiro que estacionou deverá sair
@@ -20,57 +18,44 @@ import java.util.List;
 
 public class Estacionamento {
 
-    List<Carro> carros = new ArrayList<>();
-    List<Motorista> motoristas = new ArrayList<>();
-    int vagas = 10;   //• O número de vagas do estacionamento são de dez carros.
-
+    private final List<Carro> vagasUtilizadas = new ArrayList<>();
+    int limiteDeVagas = 10;
+    int idadePreferencial = 55;
 
     public void estacionar(Carro carro) {
-        if (carroValido(carro)) {
-            while (vagas >= 0) {
-                for (Carro veiculo : carros) {
-                    carros.add(veiculo);
-                    vagas = vagas -1;
-                }    
-            }            
-        }    
+
+        carroPermitido(carro);
+
+        if(vagasUtilizadas.size() < limiteDeVagas){
+            vagasUtilizadas.add(carro);
+        }else if (vagasUtilizadas.size() == limiteDeVagas){
+            if (vagasUtilizadas.stream().noneMatch(veiculo -> veiculo.getMotorista().getIdade() < idadePreferencial)){
+                throw new EstacionamentoException("Não há vagas");
+            }
+            for (int i = 0; i < vagasUtilizadas.size(); i++) {
+                Carro veiculo = vagasUtilizadas.get(i);
+                if (veiculo.getMotorista().getIdade() >= idadePreferencial) {
+                    continue;
+                } else {
+                    vagasUtilizadas.remove(veiculo);
+                    vagasUtilizadas.add(carro);
+                    break;
+                }
+            }
+        }else {
+            throw new EstacionamentoException("Não há vagas");
+        }
     }
 
     public int carrosEstacionados() {
-        return carros.size();        
+        return vagasUtilizadas.size();
     }
 
     public boolean carroEstacionado(Carro carro) {
-        if (carros.contains(carro)){
-            return true;
-        }
-        return false;
+        return vagasUtilizadas.contains(carro);
     }
 
-    public Boolean carroValido(Carro carro) {
-
-        if (carro.getMotorista() == null) { //• Para entrar no estacionamento, é necessário que exista um motorista, ou seja, nada de carro autônomo.
-            throw new EstacionamentoException("Necessário motorista, carro autônomo não permitido");
-        }
-        if (carro.getMotorista().getIdade() <18) { //• O motorista precisa ter idade suficiente para dirigir e possuir uma habilitação.
-            throw new EstacionamentoException("Proibido motoristtas menores de idade");
-        }
-        if (carro.getMotorista().getPontos() >20) {//• A habilitação não deverá está suspensa, ou seja, a pontuação da carteira de motorista não deverá ser superior a vinte pontos.
-            throw new EstacionamentoException("Habilitação inválida, pontuação excedida");
-        }        
-        if (carro.getMotorista().getHabilitacao() == null) {
-            throw new EstacionamentoException("Habilitação não informada");
-        }
-        if (carro.getMotorista().getNome().isEmpty()) {
-            throw new NullPointerException("Nome do motorista inválido");
-        }
-        if (carro.getCor() == null) {
-            throw new EstacionamentoException("Cor não informada");
-        }
-        if (carro.getPlaca() == null) {
-            throw new NullPointerException("Placa não informada");
-        }        
-        return true;
+    public Boolean carroPermitido(Carro carro) {
+        return carro.carroComMotorista() && carro.getMotorista().motoristaValido();
     }
-
 }

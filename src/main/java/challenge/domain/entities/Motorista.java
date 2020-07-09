@@ -1,5 +1,6 @@
 package challenge.domain.entities;
 
+import challenge.exceptions.EstacionamentoException;
 import java.util.Objects;
 
 public class Motorista {
@@ -20,7 +21,7 @@ public class Motorista {
     }
 
     public String getNome() {
-        return nome;
+        return nome == null ? "" : nome;
     }
 
     public int getIdade() {
@@ -35,6 +36,16 @@ public class Motorista {
         return habilitacao;
     }
 
+    public boolean motoristaValido(){
+        if (idade > 0 && idade < 18) throw new EstacionamentoException("Proibido motoristas menores de " +
+                "idade"); //Teste ok
+        if (idade < 0 || pontos < 0) throw new IllegalArgumentException();
+        if (pontos > 20) throw new EstacionamentoException("Habilitação inválida, pontuação excedida");//Teste ok
+
+
+
+        return true;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -87,11 +98,13 @@ public class Motorista {
         }
 
         public MotoristaBuilder withIdade(int idade) {
+            if (idade < 0 ) throw new IllegalArgumentException();
             this.idade = idade;
             return this;
         }
 
         public MotoristaBuilder withPontos(int pontos) {
+            if (pontos < 0) throw new IllegalArgumentException();
             this.pontos = pontos;
             return this;
         }
@@ -103,6 +116,8 @@ public class Motorista {
 
 
         public Motorista build() {
+            if (this.nome == null) throw new NullPointerException();
+            if (this.habilitacao == null || this.habilitacao.equals("")) throw new NullPointerException();
             return new Motorista(nome, idade, pontos, habilitacao);
         }
     }

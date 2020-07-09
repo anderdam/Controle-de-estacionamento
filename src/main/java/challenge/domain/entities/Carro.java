@@ -3,6 +3,7 @@ package challenge.domain.entities;
 import java.util.Objects;
 
 import challenge.domain.enums.Cor;
+import challenge.exceptions.EstacionamentoException;
 
 public class Carro {
 
@@ -28,6 +29,12 @@ public class Carro {
 
     public Cor getCor() {
         return cor;
+    }
+
+    public Boolean carroComMotorista(){
+        if (getMotorista() == null) throw new EstacionamentoException("Não é permitido carro autônomo");
+
+        return true;
     }
 
     @Override
@@ -90,6 +97,9 @@ public class Carro {
         }
 
         public Carro build() {
+            if (placa == null || placa.isEmpty()) throw new NullPointerException("Placa não informada");
+            if (cor == null) throw new NullPointerException("Cor não informada");
+
             return new Carro(motorista, placa, cor);
         }
     }
